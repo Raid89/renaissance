@@ -1,0 +1,67 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+
+<div class="content-wrapper" style="background-color: #1E4398;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5 pt-4">
+        <div class="card h-100">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <div class="row">
+              <div class="col-6 mt-5">
+                <h1>{{ templeatesCreated }}</h1>
+              </div>
+              <div class="col-6 d-flex justify-content-end align-items-center">
+                <i class="bi bi-file-earmark-text-fill" style="font-size: 130px;"></i>
+              </div>
+            </div>
+            <div class="mt-auto">
+              <h5 class="text-center h4">Number of templates created</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7 card-canva pt-4">
+      <!--   <h3 class="card-title fw-bold text-white">Number of published documents per day</h3> -->
+        <div class="card card-info h-100">
+          <div class="card-header bg-body text-dark">
+            <h3 class="card-title fw-bold">Number of published documents per day</h3>
+          </div>
+          <div class="card-body">
+            <div style="display: block;">
+              <canvas baseChart width="600" height="230" [type]="'line'" [data]="lineChartData"
+                [options]="lineChartOptions" [legend]="lineChartLegend">
+              </canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-3 ">
+      <div class="card-body">
+        <span class="titulo fw-bold card-published">Recent Published documents</span>
+        <div class="table-responsive mt-3">
+          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped row-border hover">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">File Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Uploaded By</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let getDocuments of getPublished">
+                <td>{{ getDocuments.created_at }}</td>
+                <td>{{ getDocuments.file_name }}</td>
+                <td>{{ getDocuments.description}}</td>
+                <td>{{ getDocuments.created_by }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

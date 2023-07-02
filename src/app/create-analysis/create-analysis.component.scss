@@ -1,0 +1,32 @@
+
+
+.round-button {
+    border-radius: 50%;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: white;
+  }
+  
+  .green {
+    background-color: green;
+  }
+  
+  .red {
+    background-color: red;
+  }
+  
+  .container-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; 
+    gap: 30px;
+  }
+  
+  .modal-dialog{
+    margin-left: 23%;
+  }
+  .vertical-line {
+    width: 2px;
+    background-color: rgb(255, 255, 255);
+    height: 100%;
+  }
+  

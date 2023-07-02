@@ -1,0 +1,118 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper" style="background-color: #1E4398;">
+  <br>
+  <div class="row">
+
+      <div class="row mt-4 me-3">
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-body">
+
+              <div class="card flex-grow-0">
+                <div class="card-header text-center">
+                  <h1>Angular Editor <img src="assets/angular-editor-logo.png" alt="logo-editor-logo"> </h1>
+                </div>
+
+                <div class="card-body">
+                  <div class="container mb-2">
+                    <input type="text" name="templateName" [(ngModel)]="templateName" class="form-control"
+                      placeholder="Template Name" required>
+                  </div>
+                  <form role="form" #myForm="ngForm" accept-charset="UTF-8" novalidate>
+                    <div class="form-group has-feedback"
+                      [ngClass]="{ 'has-error': myckeditor.invalid && myckeditor.touched }">
+                      <ckeditor [(ngModel)]="mycontent" #myckeditor="ngModel" name="myckeditor" required
+                        [config]="ckeConfig" debounce="500" (paste)="onPaste($event)" (change)="onChange($event)">
+                      </ckeditor>
+                      <div *ngIf="myckeditor.invalid && myckeditor.touched" class="help-block">Required field.</div>
+                    </div>
+
+                    <div class="text-start">
+                      <button data-toggle="modal" data-target="#myModal" [disabled]="myForm.invalid || loading"
+                        class="btn btn-success mr-3" [disabled]="loading">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
+                        <span *ngIf="!loading" class="ml-2 mr-2">Save</span>
+                      </button>
+
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Save template</h5>
+                              <button type="button" class="close" aria-label="Close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <h6>Template Name</h6>
+                              <input type="text" class="form-control" placeholder="Ingrese algo">
+
+                              <h6 class="mt-4">Try Name</h6>
+                              <select id="opciones" class="form-control">
+                                <option value="opcion1">Opción 1</option>
+                                <option value="opcion2">Opción 2</option>
+                              </select>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-primary" (click)="save()" >Save</button>
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+                      <button [disabled]="myForm.invalid" class="btn btn-primary" [disabled]="loading">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+                        <span *ngIf="!loading">Update</span></button>
+
+                      <div *ngIf="error" class="text-danger mt-2">{{ error }}</div>
+                      <div *ngIf="response" class="text-success mt-2">{{ response }}</div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-3">
+          <div class="card">
+            <div class="card-body">
+
+                  <div class="d-flex align-items-start justify-content-start flex-grow-2 card me-3">
+                    <div class="card-header">
+                      <h5>Variables</h5>
+                    </div>
+
+                    <div class="d-flex flex-column card-body overflow-auto" style="height: 367px;">
+                      <span *ngFor="let item of responseVariables; let i = index" draggable="true" [id]="item.var_name"
+                        (dragstart)="drag($event)">
+                        {{ item.var_name }}
+                      </span>
+                    </div>
+                  </div>
+
+              <nav>
+                <div class="d-flex align-items-start justify-content-start flex-grow-2 card me-3">
+                  <div class="card-header">
+                    <h6 class="mb-5">Comparable Data Sheets "CD"</h6>
+                    <h6>Comparison Analysis</h6>
+                  </div>
+                </div>
+              </nav>
+
+            </div>
+          </div>
+        </div>        
+      </div>
+  </div>
+</div>

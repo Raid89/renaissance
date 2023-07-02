@@ -1,0 +1,12 @@
+[class*="item_list__button"]{
+    border-radius: 50%;
+    color: white;
+    border: none;
+}
+
+.item_list__button_add{
+    background-color: green;
+}
+.item_list__button_remove{
+    background-color: red;
+}

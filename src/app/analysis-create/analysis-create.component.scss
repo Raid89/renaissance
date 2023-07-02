@@ -1,0 +1,20 @@
+.analysis_create__container{
+    margin: 5rem 3rem;
+}
+
+table{
+    width: 45%;
+}
+
+[class*="item_list__button"]{
+    border-radius: 50%;
+    color: white;
+    border: none;
+}
+
+.item_list__button_add{
+    background-color: green;
+}
+.item_list__button_remove{
+    background-color: red;
+}

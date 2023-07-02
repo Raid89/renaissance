@@ -1,0 +1,165 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+
+<div class="content-wrapper" style="background-color: #1E4398;">
+  <div class="overlay" *ngIf="loading">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="container d-flex justify-content-end">
+    <div class="row col-4" style="z-index: 9999;">
+      <p-messages  *ngIf="!variableSuccess" [(value)]="messagesError" [enableService]="false" [closable]="false"
+      class="position-absolute top-0 translate-start">
+      </p-messages>
+      <p-messages *ngIf="variableSuccess" [(value)]="messagesSuccess" [enableService]="false" [closable]="false"
+      class="position-absolute top-0 translate-start">
+      </p-messages>
+    </div>
+  </div>
+
+  <form class="formulario mt-5" [formGroup]="createComparableForm" (ngSubmit)="onSubmit()">
+    <div class="container mt-4">
+      <div class="row pl-3 ">
+        <div class="col-md-9">
+          <h3 class="text-white mt-5">Comparable data sheets</h3>
+
+          <div class="input-group mt-2">
+            <input type="search" class="form-control col-4" placeholder="Search:" #searchInput
+              (keyup)="searchComparable(searchInput.value)" />
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="bi bi-search"></i>
+              </span>
+            </div>
+          </div>
+
+          <div *ngIf="showSearchResults && (searchResults && searchInput.value.trim() !== '')">
+            <ul class="search-results search-results-container">
+              <li *ngFor="let result of searchResults" (click)="selectResult(result)">
+                {{ result.name }}
+              </li>
+            </ul>
+          </div>
+
+
+
+
+          <div *ngIf="noMatchesFound" class="alert alert-danger mt-2">
+            No matches found.
+          </div>
+
+
+          <div class="col-6 mt-5 upload-image" [style.background-image]="'url(' + imageUrl + ')'"
+            (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+            <div class="upload-image-container">
+              <button class="btn-remove-image" *ngIf="imageUrl" (click)="removeImage()">
+                <i class="fas fa-times-circle text-danger"></i>
+              </button>
+              <div class="upload-image-content" *ngIf="!imageUrl">
+                <label for="upload-image" class="btn btn-primary">
+                  Upload image
+                  <input (change)="handleImageInput($event)"  formControlName="image" type="file" accept=".jpg, .jpeg, .png" id="upload-image" class="d-none"
+                    (change)="onFileChange($event)" />
+                </label>
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- TABLA VARIABLES -->
+
+
+          <div class="card mt-5 text-dark">
+            <div class="card-body">
+              <div class="table-responsive mt-3">
+                <mat-table [dataSource]="dataSourcePacks">
+                  <ng-container formArrayName="body">
+
+
+                    <ng-container matColumnDef="name">
+                      <mat-header-cell *matHeaderCellDef>
+                        <h5>Variable name</h5>
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element;" [formGroup]="element">
+
+                        <input class="form-control" matInput [value]="selectedVariableName" formControlName="name" required>
+                      </mat-cell>
+                    </ng-container>
+                    
+
+                    <ng-container matColumnDef="value">
+                      <mat-header-cell *matHeaderCellDef>
+                        <h5>Value</h5>
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element;" [formGroup]="element">
+
+                        <input class="form-control" matInput [value]="selectedVariableValue" formControlName="value" required>
+                      </mat-cell>
+                    </ng-container>                 
+                    
+      
+                    <ng-container matColumnDef="Action">
+                    
+                      <mat-header-cell *matHeaderCellDef>
+                        <h5>Action</h5>
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element; index as i" [formGroup]="element">
+
+                        
+                        <i (click)="addVariable()" class="icon bi bi-plus-circle-fill mr-2 text-success"></i>
+                        <i (click)="deleteVariable(i)" class="icon bi bi-dash-circle-fill text-danger"></i>
+
+
+                      </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                  </ng-container>
+                </mat-table>
+
+              </div>
+            </div>
+          </div>
+
+
+          <div class="d-flex col-md-6 mt-5">
+            <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary col-4 mr-4">
+              Save
+            </button>
+            <button type="button" class="btn btn-secondary col-4" (click)="updateComparable()">
+              Update
+            </button>
+          </div>
+
+          <!-- Modal -->
+          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Save Comparable</h5>
+                  <button type="button" class="close" aria-label="Close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h6>Comparable Name</h6>
+                  <input formControlName="comparableName" type="text" class="form-control">
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-outline-primary" [disabled]="!createComparableForm.valid">Save</button>
+                  <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"
+                  (click)="resetForm(createComparableForm)">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

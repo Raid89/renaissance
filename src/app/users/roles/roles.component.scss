@@ -1,0 +1,136 @@
+.line {
+    border-top: 2px solid white;
+  }
+  .alert {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 5px 10px;
+    background-color: #82c98e;
+    color: white;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  
+  .alert .close-button {
+    cursor: pointer;
+    margin-left: auto;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .alert .icon {
+    color: white;
+    margin-right: 5px;
+  }
+
+  .vertical-line {
+    border-left: 1px solid white;
+    height: 300px;
+    opacity: 75%;
+  }
+
+  .line-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+  }
+  
+  
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 0;
+    }
+    100% {
+      display: none;
+    }
+  }
+  
+  .alert.fade-out {
+    animation: fadeOut 3s;
+  }
+
+  .custom-scroll {
+    max-height: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.2);
+  }
+  
+  .custom-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .custom-scroll::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  
+  .custom-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+  }
+  
+  .custom-scroll h2 {
+    margin-top: 0;
+  }
+  
+
+  @media (max-width: 767px) {
+    .line-center {
+      display: none;
+    }
+
+    #permissions{
+      margin-top: 2rem;
+    }
+
+    h1.text-white {
+      font-size: 24px;
+    }
+  
+    h2.text-white {
+      font-size: 20px;
+    }
+  
+    .form-check-label {
+      font-size: 16px;
+    }
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+ 

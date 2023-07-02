@@ -1,0 +1,21 @@
+/* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+body {
+    background-color: #1E4398
+    // background-image: -webkit-linear-gradient(to left, #1c558c, #e0eafc);
+    // background-image: linear-gradient(to left, #1c558c, #e0eafc);
+}
+.fade-out {
+  opacity: 1;
+  transition: opacity 5s;
+}
+
+.fade-out.fade-out-animation {
+  opacity: 0;
+}
+
+.sidebar-mini.sidebar-collapse .main-sidebar, .sidebar-mini.sidebar-collapse .main-sidebar::before{
+
+  width: 0rem !important;
+}

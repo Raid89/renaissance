@@ -1,0 +1,12 @@
+<div class="seeker_select__main_container" >
+    <div class="seeker_select__input-container">
+        <input type="text" class="form-control" (focus)="isOptionsOpen = true" (appOutsideClick)="isOptionsOpen = false">
+    </div>
+
+    <div class="seeker_select__options_container" *ngIf="isOptionsOpen">
+        <input type="text" class="form-control" (focus)="isOptionsOpen = true">
+        <a href="">1</a>
+        <a href="">2</a>
+        <a href="">3</a>
+    </div>
+</div>  

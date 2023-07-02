@@ -1,0 +1,211 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<div class="content-wrapper" style="background-color: #1E4398;">
+  <div class="overlay" *ngIf="loading">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="container">
+    <form [formGroup]="createVariableForm">      
+
+      <div class="row">
+
+        <div class="container d-flex justify-content-end">
+          <div class="row col-4" style="z-index: 9999;">
+            <p-messages [ngClass]="{'error-message': error, 'fade-out': error}" *ngIf="!variableSuccess" [(value)]="messagesError" [enableService]="false" [closable]="false"
+            class="position-absolute top-0 translate-start">
+            </p-messages>
+            <p-messages [ngClass]="{'success-message': success, 'fade-out': success}" *ngIf="variableSuccess" [(value)]="messagesSuccess" [enableService]="false" [closable]="false"
+            class="position-absolute top-0 translate-start">
+            </p-messages>
+          </div>
+        </div>
+
+        <div class="col-md-6 px-3 pt-4">
+          <div class="form-group">
+            <label for="variableName">Variable Name</label>
+            <input formControlName="variableName" type="text" class="form-control"
+              [ngClass]="{ 'is-invalid': createVariableForm.get('variableName')?.invalid && createVariableForm.get('variableName')?.touched }"
+              maxlength="25">
+            <div
+              *ngIf="createVariableForm.get('variableName')?.invalid && createVariableForm.get('variableName')?.touched"
+              class="invalid-feedback">
+              <span *ngIf="createVariableForm.get('variableName')?.errors?.required">Variable Name is
+                required</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 px-3 pt-4">
+          <div class="form-group">
+            <label for="variableValue">Variable Value</label>
+            <input formControlName="variableText" class="form-control"
+              id="inputValue"
+              [ngClass]="{ 'is-invalid': createVariableForm.get('variableText')?.invalid && createVariableForm.get('variableText')?.touched }"
+              maxlength="55">
+            <div
+              *ngIf="createVariableForm.get('variableText')?.invalid && createVariableForm.get('variableText')?.touched"
+              class="invalid-feedback">
+              <span *ngIf="createVariableForm.get('variableText')?.errors?.required">Variable Value is
+                required</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 px-3 pt-2 ">
+          <div class="form-group">
+            <label for="variableType">Variable Type</label>
+            <select formControlName="variableType" class="form-select" (change)=" variableInput()">
+              <option *ngFor="let types of getTypesData"  [value]="types.type_id">{{types.type}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-6 px-3 pt-2 mt-3 d-flex justify-content-start align-items-center">
+          <button class="btn btn-primary" [disabled]="!createVariableForm.valid"
+            (click)="createVariable()">
+            Create Variable
+          </button>
+        </div>
+
+
+      </div> 
+      
+
+    </form>
+
+    <div class="row px-3">
+      <div class="card mt-5">
+        <div class="card-body">
+          <span class="titulo fw-bold">Variable List</span>
+          <div class="table-responsive mt-3">
+            <table datatable [dtOptions]="dtOptions" 
+            [dtTrigger]="dtTrigger"
+              class="table table-striped row-border hover">
+              <thead>
+                <tr>
+                  <th scope="col">Variable Name</th>
+                  <th scope="col">Variable Value</th>
+                  <th scope="col">Variable Type</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let getVariable of getVariableData ">
+                  <td>{{getVariable.name}}</td>
+                  <td>{{getVariable.default_value}}</td>
+                  <td>
+                    <ng-container [ngSwitch]="getVariable.type_id">
+                      <span *ngSwitchCase="1">Number</span>
+                      <span *ngSwitchCase="2">Text</span>
+                      <span *ngSwitchCase="3">Date</span>
+                      <span *ngSwitchCase="4">Image_Page</span>
+                      <span *ngSwitchCase="5">Image</span>
+                      <span *ngSwitchCase="6">PDF</span>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <span *ngIf="getVariable.status === 1" class="text-success">Enabled</span>
+                    <span *ngIf="getVariable.status === 0" class="text-danger">Disabled</span>
+                  </td>
+                  <td>
+                    <div class="cursor-pointer">
+
+                      <div>
+
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" role="switch"
+                          [checked]="getVariable.status"
+                          (click)="setVarIdStatus(getVariable.var_type_id, getVariable.status); deleteVariable()">
+                          <i class="bi bi-pencil-square" 
+                              style="font-size: 20px; cursor: pointer;"
+                              onmouseover="this.style.opacity= '0.5';"
+                              onmouseout="this.style.opacity= '1';" 
+                              data-toggle="modal"
+                              data-target="#updateVariable"
+                              (click)="setTemplateId(getVariable.var_type_id)"></i>
+                        </div>                          
+                      </div>
+                  </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- <div class="modal fade" id="confirmation">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Delete Variable</h5>
+                  <button type="button" class="close"
+                      data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                  <div>
+                      <h6 class="mt-2">Are you sure you want to delete this variable?</h6>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-danger" 
+                  data-dismiss="modal"
+                  (click)="deleteVariable()">Ok</button>
+                  <button type="button" class="btn btn-outline-info"
+                      data-dismiss="modal">Cancel</button>
+              </div>
+          </div>
+      </div>
+    </div> -->
+
+    <form [formGroup]="updateVariableForm">
+      <div class="modal fade" id="updateVariable">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Variable</h5>
+                    <button type="button" class="close"
+                        data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <h6 class="mt-2">Variable Name</h6>
+                        <input type="text" class="form-control" 
+                        formControlName="name" maxlength="25">
+                    </div>
+                    <div>
+                      <h6 class="mt-2">Variable Value</h6>
+                      <input type="text" class="form-control"
+                      formControlName="value" maxlength="55"
+                      id="updateValue">
+                    </div>
+                    <div>
+                      <h6 class="mt-2">Variable Type</h6>
+                      <select class="form-control form-select" id=""
+                      formControlName="types"
+                      (change)="updateInput()">
+                        <option *ngFor="let types of getTypesData"  [value]="types.type_id">{{types.type}}</option>
+                      </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" 
+                    data-dismiss="modal"
+                    [disabled]="!updateVariableForm.valid"
+                    (click)="updateVariable()">Update</button>
+                    <button type="button" class="btn btn-outline-secondary"
+                        data-dismiss="modal"
+                        (click)="resetForm(createVariableForm)">Cancel</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+</div>

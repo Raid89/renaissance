@@ -1,0 +1,15 @@
+.seeker_select__main_container{
+    display: inline-flex;
+    flex-direction: column;
+    position: relative;
+
+    .seeker_select__options_container{
+        background: white;
+        border: 9px solid white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: absolute;
+        top: 100%;
+    }
+}

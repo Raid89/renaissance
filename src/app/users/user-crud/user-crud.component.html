@@ -1,0 +1,241 @@
+<div>
+    <app-header></app-header>
+    <app-sidebar></app-sidebar>
+
+    <div class="content-wrapper" style="background-color: #1E4398;">
+        <div class="overlay" *ngIf="loading">
+            <div class="spinner"></div>
+        </div>
+        <div class="container custom-container">
+            <form [formGroup]="createUserForm" class="row">
+                <div class="container col-md-4 pt-4">
+                    <div class="form-group">
+                        <label class="text">First Name</label>
+                        <input type="text" maxlength="25" formControlName="first_name" class="form-control" id="input1">
+                    </div>
+                    <div class="form-group">
+                        <label class="text">Password</label>
+                        <input type="password" maxlength="16" formControlName="password" class="form-control" id="input3"
+                            [ngClass]="{'is-invalid': createUserForm.controls.password.invalid && createUserForm.controls.password.dirty}">
+                        <div *ngIf="createUserForm.controls.password.invalid && createUserForm.controls.password.dirty"
+                            class="invalid-feedback">
+                            <div *ngIf="createUserForm.controls.password.errors?.required">
+                                Password is required.
+                            </div>
+                            <div *ngIf="createUserForm.controls.password.errors?.pattern">
+                                Password must be 4 to 16 characters long and contain only
+                                alphanumeric
+                                characters.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container col-md-4 pt-4">
+                    <div class="form-group">
+                        <label class="text">Last Name</label>
+                        <input type="text" maxlength="25" formControlName="last_name" class="form-control" id="input2">
+                    </div>
+                    <div class="form-group">
+                        <label class="text">Confirm Password</label>
+                        <input type="password"  maxlength="16" formControlName="confirmPassword" class="form-control" id="input4"
+                            [ngClass]="{'is-invalid': !passwordMatch()}">
+                        <div *ngIf="!passwordMatch()" class="invalid-feedback">
+                            Passwords do not match.
+                        </div>
+                    </div>
+                </div>
+                <div class="container col-md-4 pt-4">
+                    <div class="form-group">
+                        <label class="text">Select a Role</label>
+                        <div class="custom-select-wrapper">
+                            <select class="form-select " formControlName="role_id" aria-label="Default select example">
+                                <option *ngFor="let getRoles of getRolesData" [value]="getRoles.role_id">{{ getRoles.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group button-div" style="margin-top: 3rem;">
+                        <div>
+                            <button class="btn btn-primary" (click)="createUsers()" [disabled]="!isFormValid()">Create User</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+           
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <span class="titulo fw-bold">User List</span>
+                        <div class="table-responsive mt-3" >
+                            <table datatable [dtOptions]="dtOptions"
+                            [dtTrigger]="dtTrigger"                            
+                            class="table table-striped row-border hover">
+                                <thead >
+                                    <tr>
+                                        <th scope="col">User Name</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Role</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngIf="filteredUsersData && filteredUsersData.length > 0">
+                                        <tr *ngFor="let getUser of filteredUsersData">
+                                            <td data-toggle="modal" data-target="#myUser"
+                                                (click)="setSelectedUserName(getUser.user)">
+                                                <u style="cursor: pointer;"
+                                                onmouseover="this.style.opacity= '0.5';"
+                                                onmouseout="this.style.opacity= '1';">{{ getUser.user }}</u>
+                                            </td>
+                                            <td>{{ getUser.first_name }}</td>
+                                            <td>{{ getUser.last_name}}</td>
+                                            <td>{{ getUser.role }}</td>
+                                            
+                                            <td>
+                                                <span *ngIf="getUser.status === 1" class="text-success">Enabled</span>
+                                                <span *ngIf="getUser.status === 0" class="text-danger">Disabled</span>
+                                            </td>
+                                            <td>
+                                                <div class="cursor-pointer">
+
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch"
+                                                            id="flexSwitchCheckDefault" [checked]="getUser.status"
+                                                            (click)="setSelectedUserNameStatus(getUser.user, getUser.status);  changeUserStatus()">
+                                                        <!-- Icono de llave -->
+                                                        <i class="bi bi-key-fill " data-toggle="modal"
+                                                            data-target="#myModal"
+                                                            (click)="setSelectedUserName(getUser.user)"></i>
+                                                    </div>
+                                                </div>
+
+                                            <form [formGroup]="updatePasswordForm">
+                                                <!-- Modal Change Password-->
+                                                <div class="modal fade" id="myModal">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+
+                                                            <!-- Encabezado del modal -->
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Update User Password
+                                                                </h5>
+                                                                <button type="button" class="close"
+                                                                    data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <!-- Contenido del modal -->
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <h6 class="mt-2">Password</h6>
+                                                                    <input type="password" class="form-control" 
+                                                                        formControlName="newPassword"
+                                                                        [ngClass]="{'is-invalid': updatePasswordForm.controls.newPassword.invalid && updatePasswordForm.controls.newPassword.dirty}"
+                                                                        maxlength="16">
+                                                                    <div *ngIf="updatePasswordForm.controls.newPassword.invalid && updatePasswordForm.controls.newPassword.dirty"
+                                                                        class="invalid-feedback">
+                                                                        <div
+                                                                            *ngIf="updatePasswordForm.controls.newPassword.errors?.required">
+                                                                            Password is required.
+                                                                        </div>
+                                                                        <div
+                                                                            *ngIf="updatePasswordForm.controls.newPassword.errors?.pattern">
+                                                                            Password must be 4 to 16 characters long and
+                                                                            contain only
+                                                                            alphanumeric
+                                                                            characters.
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <h6 class="mt-2">Confirm Password</h6>
+                                                                    <input type="password" class="form-control"
+                                                                        formControlName="confirmNewPassword"
+                                                                        [ngClass]="{'is-invalid': !newPasswordMatch()}"
+                                                                        maxlength="16">
+                                                                    <div *ngIf="!newPasswordMatch()"
+                                                                        class="invalid-feedback">
+                                                                        Passwords do not match.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Pie del modal -->
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-primary"
+                                                                    (click)="updatePassword(); resetForm(updatePasswordForm);"                                                                    
+                                                                    [disabled]="!updateFormValid()" data-dismiss="modal">Update</button>
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal"
+                                                                    (click)="resetForm(updatePasswordForm)">Cancel</button>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            </td>                                        
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        
+                        <h5 class="text-secondary mt-3" *ngIf="getUsersData == 0">No users to display
+                        </h5>
+                    </div>
+                </div>  
+                
+                     
+                
+
+            <form [formGroup]="updateUserForm">
+                <!-- Modal Update User-->
+                <div class="modal fade" id="myUser" tabindex="-1" role="dialog"
+                aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content form-group">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Update User</h5>
+                            <button type="button" class="close" aria-label="Close"
+                                data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h6 class="mt-2">First Name</h6>
+                            <input type="text" class="form-control"
+                                formControlName="first_name" maxlength="25">
+
+                            <h6 class="mt-2">Last Name</h6>
+                            <input type="text" class="form-control"
+                                formControlName="last_name" maxlength="25">
+
+                            <h6 class="mt-2">Role</h6>
+                            <select id="opciones" class="form-control form-select"
+                                formControlName="role_id">
+                                <option *ngFor="let getRoles of getRolesData" [value]="getRoles.role_id">{{ getRoles.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" (click)="updateUsers();
+                            resetForm(updateUserForm)"
+                            data-dismiss="modal"
+                            [disabled]="updateUserForm.invalid">Update</button>
+                            <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal"
+                                (click)="resetForm(updateUserForm)">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>   
+        
+    
+</div>

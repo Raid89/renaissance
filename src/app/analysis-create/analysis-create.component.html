@@ -1,0 +1,114 @@
+<div>
+    <app-header></app-header>
+    <app-sidebar></app-sidebar>
+</div>
+
+<div class="analysis_create__container">
+    <div class="analysis_create__seekers_container">
+        <div class="analysis_create__seeker">
+            <app-seeker title="Analysis"></app-seeker>
+        </div>
+
+        <div class="analysis_create__seeker">
+            <app-seeker title="Comparable Data Sheets"></app-seeker>
+        </div>
+    </div>
+
+    <div class="d-flex gap-3">
+        <table>
+            <thead>
+                <tr>
+                    <th>Variable name</th>
+                    <th>Value</th>
+                    <th>Display name</th>
+                    <th>Adjusting</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of rows; let i = index">
+                    <td>
+                        <select class="form-control" [(ngModel)]="row.variable" (ngModelChange)="updateVariableValue(i, $event, 'rows2')">
+                            <option *ngFor="let item of optionsList" [value]="item">{{ item }}</option>
+                        </select>
+                 
+                    </td>
+
+                    <td>
+                        <input type="text" [(ngModel)]="row.value" class="form-control">
+                    </td>
+
+                    <td>
+                        <input type="text" [(ngModel)]="row.displayName" class="form-control">
+                    </td>
+
+                    <td>
+                        <input type="text" [(ngModel)]="row.adjusting" class="form-control">
+                    </td>
+
+                    <td class="d-flex">
+                        <button (click)="addRow(row)" class="item_list__button_add"><i class="fa fa-plus"
+                                aria-hidden="true"></i></button>
+                        <button (click)="removeRow(row)" class="item_list__button_remove "><i class="fa fa-minus"
+                                aria-hidden="true"></i></button>
+                        <input type="checkbox" [(ngModel)]="row.bold">Bold
+                        <input type="checkbox" [(ngModel)]="row.underline">Underline
+                        <select [(ngModel)]="row.fontType">
+                            <option *ngFor="let item of optionsList" value="item">{{ item }}</option>
+                        </select>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>Variable name</th>
+                    <th>Value</th>
+                    <th>Display name</th>
+                    <th>Adjusting</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of rows2; let i = index">
+                    <td>
+                        <select class="form-control" [(ngModel)]="row.variable" (ngModelChange)="updateVariableValue(i, $event, 'rows')">
+                            <option *ngFor="let item of optionsList" [value]="item">{{ item }}</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <input type="text" [(ngModel)]="row.value" class="form-control">
+                    </td>
+
+                    <td>
+                        <input type="text" [(ngModel)]="row.displayName" class="form-control">
+                    </td>
+
+                    <td>
+                        <input type="text" [(ngModel)]="row.adjusting" class="form-control">
+                    </td>
+
+                    <td class="d-flex">
+                        <button (click)="addRow(row)" class="item_list__button_add"><i class="fa fa-plus"
+                                aria-hidden="true"></i></button>
+                        <button (click)="removeRow(row)" class="item_list__button_remove "><i class="fa fa-minus"
+                                aria-hidden="true"></i></button>
+                        <input type="checkbox" [(ngModel)]="row.bold">Bold
+                        <input type="checkbox" [(ngModel)]="row.underline">Underline
+                        <select [(ngModel)]="row.fontType">
+                            <option *ngFor="let item of optionsList" value="item">{{ item }}</option>
+                        </select>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+<app-sekeer-select></app-sekeer-select>

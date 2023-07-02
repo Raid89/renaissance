@@ -1,0 +1,13 @@
+.icon-document{
+    height: 128px;
+    width: 103px;
+}
+@media (max-width: 767px) {
+    .card-canva {
+      margin-top: 15px;
+    };
+    .card-published{
+        display: flex;
+        justify-content: center;
+    }
+  }
