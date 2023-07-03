@@ -28,10 +28,7 @@
             <tbody>
                 <tr *ngFor="let row of rows; let i = index">
                     <td>
-                        <select class="form-control" [(ngModel)]="row.variable" (ngModelChange)="updateVariableValue(i, $event, 'rows2')">
-                            <option *ngFor="let item of optionsList" [value]="item">{{ item }}</option>
-                        </select>
-                 
+                        <app-sekeer-select [options]="getVariableData" [optionValue]="row.variable" (returnOption)="row.variable = $event; updateVariableValue(i, $event, 'rows2')"></app-sekeer-select>
                     </td>
 
                     <td>
@@ -47,14 +44,14 @@
                     </td>
 
                     <td class="d-flex">
-                        <button (click)="addRow(row)" class="item_list__button_add"><i class="fa fa-plus"
+                        <button (click)="abrirDialogo()" class="item_list__button_add"><i class="fa fa-plus"
                                 aria-hidden="true"></i></button>
                         <button (click)="removeRow(row)" class="item_list__button_remove "><i class="fa fa-minus"
                                 aria-hidden="true"></i></button>
                         <input type="checkbox" [(ngModel)]="row.bold">Bold
                         <input type="checkbox" [(ngModel)]="row.underline">Underline
                         <select [(ngModel)]="row.fontType">
-                            <option *ngFor="let item of optionsList" value="item">{{ item }}</option>
+                            <option value="14px" selected>Font Style</option>
                         </select>
                     </td>
                 </tr>
@@ -64,19 +61,13 @@
         <table>
             <thead>
                 <tr>
-                    <th>Variable name</th>
-                    <th>Value</th>
-                    <th>Display name</th>
-                    <th>Adjusting</th>
-                    <th>Actions</th>
+                    <th *ngFor="let item of rowsList">{{ item }}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let row of rows2; let i = index">
                     <td>
-                        <select class="form-control" [(ngModel)]="row.variable" (ngModelChange)="updateVariableValue(i, $event, 'rows')">
-                            <option *ngFor="let item of optionsList" [value]="item">{{ item }}</option>
-                        </select>
+                        <app-sekeer-select [options]="getVariableData" [optionValue]="row.variable" (returnOption)="row.variable = $event; updateVariableValue(i, $event, 'rows')"></app-sekeer-select>
                     </td>
 
                     <td>
@@ -99,7 +90,7 @@
                         <input type="checkbox" [(ngModel)]="row.bold">Bold
                         <input type="checkbox" [(ngModel)]="row.underline">Underline
                         <select [(ngModel)]="row.fontType">
-                            <option *ngFor="let item of optionsList" value="item">{{ item }}</option>
+                            <option value="14px" selected>Font Style</option>
                         </select>
                     </td>
                 </tr>
@@ -107,8 +98,4 @@
             </tbody>
         </table>
     </div>
-
-
 </div>
-
-<app-sekeer-select></app-sekeer-select>
