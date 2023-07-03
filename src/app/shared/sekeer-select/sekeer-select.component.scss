@@ -11,5 +11,15 @@
         align-items: center;
         position: absolute;
         top: 100%;
+        overflow: auto;
+        z-index: 10;
+  
+
+        a{
+            padding: 5px 0px;
+            cursor: pointer;
+            width: 100%;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.281);
+        }
     }
 }

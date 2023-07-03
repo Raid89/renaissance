@@ -1,12 +1,10 @@
-<div class="seeker_select__main_container" >
+<div class="seeker_select__main_container" (mouseenter)="toggleOptions(true)" (mouseleave)="toggleOptions(false)">
     <div class="seeker_select__input-container">
-        <input type="text" class="form-control" (focus)="isOptionsOpen = true" (appOutsideClick)="isOptionsOpen = false">
+      <input type="text" class="form-control" [(ngModel)]="selectedOption" readonly>
     </div>
-
+  
     <div class="seeker_select__options_container" *ngIf="isOptionsOpen">
-        <input type="text" class="form-control" (focus)="isOptionsOpen = true">
-        <a href="">1</a>
-        <a href="">2</a>
-        <a href="">3</a>
+        <input type="text" class="form-control" [(ngModel)]="searchTerm" (ngModelChange)="filterOptions()">
+        <a *ngFor="let item of (filteredOptions | slice:0:10); let i = index" (click)="selectOption(i)">{{ item.name }}</a>
     </div>
-</div>  
+  </div>

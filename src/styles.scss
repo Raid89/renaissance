@@ -16,6 +16,11 @@ body {
 }
 
 .sidebar-mini.sidebar-collapse .main-sidebar, .sidebar-mini.sidebar-collapse .main-sidebar::before{
-
   width: 0rem !important;
+}
+
+.center-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -1,22 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { varsListRequest } from '../interfaces/varsTemplate';
 import { VariablesService } from '../services/variables.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogNewItem } from './components/dialog-new-item/dialog-new-item';
 
 @Component({
   selector: 'app-analysis-create',
   templateUrl: './analysis-create.component.html',
   styleUrls: ['./analysis-create.component.scss']
 })
-export class AnalysisCreateComponent {
+export class AnalysisCreateComponent implements OnInit{
 
   public rowsForm!: FormGroup;
   public rows: any[] = []; 
   public rows2: any[] = []; 
-  public optionsList: string[] = [ 'Address', 'Sale Price', 'Prueba 1', 'Prueba 2' ]
+  public rowsList: string[] = [ 'Variable name', 'Value', 'Display name', 'Adjusting', 'Actions' ]
   public getVariableData!: any;
 
-  constructor(private formBuilder: FormBuilder, private variablesService: VariablesService) {
+  constructor
+  (
+    private formBuilder: FormBuilder, 
+    private variablesService: VariablesService,
+    public dialog: MatDialog
+  ){
     this.rowsForm = this.formBuilder.group({
       variable: [''],
       value: [''],
@@ -26,9 +33,11 @@ export class AnalysisCreateComponent {
       underline: [''],
       fontType: [''],
     });
-
-    this.getVariable()
     this.addRow();
+  }
+
+  ngOnInit(): void {
+    this.getVariable()
   }
 
   addRow(afterRow?: any) {
@@ -73,6 +82,17 @@ export class AnalysisCreateComponent {
     if (rowIndex !== -1) {
       this[arrayChange][rowIndex].variable = newValue;
     }
+  }
+
+  abrirDialogo() {
+    const dialogRef = this.dialog.open(DialogNewItem, {
+      width: '250px',
+      panelClass: 'center-dialog',
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      console.log('Dato guardado:', resultado);
+    });
   }
   
 }

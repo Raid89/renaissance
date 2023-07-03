@@ -30,6 +30,8 @@ import { MaterialModule } from './modules/material/material.module';
 import { ItemListComponent } from './analysis-create/components/item-list/item-list.component';
 import { CommonModule } from '@angular/common';
 import { OutsideClickDirective } from './directives/outside-click-directive.directive';
+import { DialogNewItem } from './analysis-create/components/dialog-new-item/dialog-new-item';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,7 @@ import { OutsideClickDirective } from './directives/outside-click-directive.dire
     SeekerComponent,
     ItemListComponent,
     OutsideClickDirective,
+    DialogNewItem
   ],
 
   imports: [
@@ -61,7 +64,8 @@ import { OutsideClickDirective } from './directives/outside-click-directive.dire
     SharedModule,
     DataTablesModule,
     NgChartsModule,
-    MaterialModule
+    MaterialModule,
+    MatDialogModule
 
   ],
   exports: [

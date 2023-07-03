@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Diálogo</h2>
+
+<div mat-dialog-content>
+    <p>Selecciona una opción:</p>
+    <mat-radio-group [(ngModel)]="type">
+        <mat-radio-button value="column">Columna</mat-radio-button>
+        <mat-radio-button value="row">Fila</mat-radio-button>
+    </mat-radio-group>
+</div>
+
+<div mat-dialog-content>
+    <p>Ingrese un dato:</p>
+    <mat-form-field>
+        <input matInput [(ngModel)]="name">
+    </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="cancelar()">Cancelar</button>
+    <button mat-button (click)="guardar()">Guardar</button>
+</div>
