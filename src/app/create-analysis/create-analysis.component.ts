@@ -61,10 +61,10 @@ export class CreateAnalysisComponent implements OnInit {
         }
       }
     }
-    this.analysisService.postAnalysis(data).subscribe((response: any) => {
-      console.log(response)
-      console.log(this.createAnalysisForm)
-    })
+    // this.analysisService.postAnalysis(data).subscribe((response: any) => {
+    //   console.log(response)
+    //   console.log(this.createAnalysisForm)
+    // })
   }
 
 

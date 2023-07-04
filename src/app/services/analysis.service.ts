@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import {createAnalysis} from "../interfaces/varsAnalysis"
+import {ICreateAnalysis, createAnalysis} from "../interfaces/varsAnalysis"
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
@@ -25,7 +25,7 @@ export class AnalysisService {
 
 
 
-  postAnalysis(createAnalysis: createAnalysis): Observable<any> {
+  postAnalysis(createAnalysis: ICreateAnalysis): Observable<any> {
     return this.http.post(environment.url, createAnalysis, this.httpOptions)
   }
 

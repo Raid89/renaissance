@@ -21,12 +21,12 @@ export interface createAnalysis {
    }
 }
 
-interface Column {
+export interface IColumn {
    col_name: string;
    col_value: string;
  }
  
- interface Analysis {
+ export interface IAnalysis {
    var_name: string;
    var_value: string;
    body: string[];
@@ -36,11 +36,11 @@ export interface ICreateAnalysis {
    type: number;
    params: {
      name: string;
-     column: Column[];
+     column: IColumn[];
    };
    body: {
-     analysis_1: Analysis[];
-     analysis_2: Analysis[];
+     analysis_1: IAnalysis[];
+     analysis_2: IAnalysis[];
    };
  }
  

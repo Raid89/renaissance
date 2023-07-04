@@ -9,6 +9,7 @@ export class SekeerSelectComponent implements OnInit, OnChanges {
   @Input() optionValue!: string;
   @Input() options!: Array<any>;
   @Output() returnOption = new EventEmitter();
+  @Output() inputChange = new EventEmitter();
   
   selectedOption: any;
   filteredOptions!: any[];
@@ -22,9 +23,10 @@ export class SekeerSelectComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.filterOptions()
-    if(changes.optionValue) this.selectedOption = changes.optionValue.currentValue
-    
+    if(changes.optionValue) {
+      this.selectedOption = changes.optionValue.currentValue
+      this.filterOptions()
+    }
   }
 
   toggleOptions(open: boolean) {
@@ -33,16 +35,18 @@ export class SekeerSelectComponent implements OnInit, OnChanges {
 
   filterOptions() {
     if (this.searchTerm) {
+      this.inputChange.emit(this.searchTerm)
       this.filteredOptions = this.options.filter(option =>
         option.name.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     } else {
       this.filteredOptions = this.options;
     }
+
   }
 
   selectOption(index: number){
-    this.selectedOption = this.options[index].name
+    this.selectedOption = this.options[index]
     this.returnOption.emit(this.selectedOption)
   }
 }

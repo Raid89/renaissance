@@ -4,15 +4,27 @@
 </div>
 
 <div class="analysis_create__container">
-    <div class="analysis_create__seekers_container">
-        <div class="analysis_create__seeker">
-            <app-seeker title="Analysis"></app-seeker>
+    <div class="d-flex">
+        <div class="analysis_create__seekers_container">
+            <div class="analysis_create__seeker">
+                <app-seeker title="Analysis"></app-seeker>
+            </div>
+    
+            <div class="analysis_create__seeker">
+                <h3>Comparable Data Sheets</h3>
+                <app-sekeer-select [options]="comparablesData" [optionValue]="comparableSelected" (returnOption)="selectComparable($event)"  (inputChange)="searchComparable($event)"></app-sekeer-select>
+            </div>
         </div>
 
-        <div class="analysis_create__seeker">
-            <app-seeker title="Comparable Data Sheets"></app-seeker>
+        <div class="analysis_create__seekers_container">
+    
+            <div class="analysis_create__seeker">
+                <h3>Comparable Data Sheets</h3>
+                <app-sekeer-select [options]="comparablesData" [optionValue]="comparableSelected" (returnOption)="selectComparable($event)"  (inputChange)="searchComparable($event)"></app-sekeer-select>
+            </div>
         </div>
     </div>
+    
 
     <div class="d-flex gap-3">
         <table>
@@ -22,13 +34,14 @@
                     <th>Value</th>
                     <th>Display name</th>
                     <th>Adjusting</th>
+                    <th *ngFor="let item of newColumns"> {{ item }} </th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let row of rows; let i = index">
                     <td>
-                        <app-sekeer-select [options]="getVariableData" [optionValue]="row.variable" (returnOption)="row.variable = $event; updateVariableValue(i, $event, 'rows2')"></app-sekeer-select>
+                        <app-sekeer-select [options]="getVariableData" [optionValue]="row.variable" (returnOption)="row.variable = $event.name; updateVariableValue(i, $event.name, 'rows2')"></app-sekeer-select>
                     </td>
 
                     <td>
@@ -43,8 +56,12 @@
                         <input type="text" [(ngModel)]="row.adjusting" class="form-control">
                     </td>
 
+                    <td *ngFor="let column of additionalColumns">
+                        <input type="text" [(ngModel)]="row[column]" class="form-control">
+                    </td>
+
                     <td class="d-flex">
-                        <button (click)="abrirDialogo()" class="item_list__button_add"><i class="fa fa-plus"
+                        <button (click)="abrirDialogo(row)" class="item_list__button_add"><i class="fa fa-plus"
                                 aria-hidden="true"></i></button>
                         <button (click)="removeRow(row)" class="item_list__button_remove "><i class="fa fa-minus"
                                 aria-hidden="true"></i></button>
@@ -61,13 +78,18 @@
         <table>
             <thead>
                 <tr>
-                    <th *ngFor="let item of rowsList">{{ item }}</th>
+                    <th>Variable name</th>
+                    <th>Value</th>
+                    <th>Display name</th>
+                    <th>Adjusting</th>
+                    <th *ngFor="let item of newColumns"> {{ item }} </th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let row of rows2; let i = index">
                     <td>
-                        <app-sekeer-select [options]="getVariableData" [optionValue]="row.variable" (returnOption)="row.variable = $event; updateVariableValue(i, $event, 'rows')"></app-sekeer-select>
+                        <app-sekeer-select [options]="getVariableData" [optionValue]="row.variable" (returnOption)="row.variable = $event.name; updateVariableValue(i, $event.name, 'rows')"></app-sekeer-select>
                     </td>
 
                     <td>
@@ -82,8 +104,12 @@
                         <input type="text" [(ngModel)]="row.adjusting" class="form-control">
                     </td>
 
+                    <td *ngFor="let column of additionalColumns">
+                        <input type="text" [(ngModel)]="row[column]" class="form-control">
+                    </td>
+
                     <td class="d-flex">
-                        <button (click)="addRow(row)" class="item_list__button_add"><i class="fa fa-plus"
+                        <button (click)="abrirDialogo(row)" class="item_list__button_add"><i class="fa fa-plus"
                                 aria-hidden="true"></i></button>
                         <button (click)="removeRow(row)" class="item_list__button_remove "><i class="fa fa-minus"
                                 aria-hidden="true"></i></button>
@@ -99,3 +125,5 @@
         </table>
     </div>
 </div>
+
+<button (click)="sendForm()"> Save </button>
